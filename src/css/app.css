@@ -1,0 +1,59 @@
+.parent {
+    position: relative;
+    top: 0px;
+    left:0;
+    margin: auto;
+}
+
+#shopping{
+    font-size:50px;
+    color:green;
+}
+
+#ordertable{
+    width:60%;
+    margin:auto;
+    cursor:pointer;
+    padding-top:40px;
+}
+
+#message{
+    color:red;
+    font-size:20px;
+    font-weight: bolder;
+}
+
+[id^=img]{
+    width:100px;
+    height:100px;
+}
+
+.logo {
+    position: relative;
+    top: 0px;
+    left: 0px;
+    border: none;
+    width: 180px;
+    height: 150px;
+}
+
+.bonzi {
+    position: relative;
+    top: 5px;
+    left: 0px;
+    border: none;
+}
+
+#h1{
+    color: red;
+}
+#showtable{
+    width:80%;
+    margin:auto;
+    cursor:pointer;
+    padding-top:40px;
+}
+
+#showtable td {
+    padding:5px;
+}
