@@ -49,7 +49,7 @@
         },
         setup() {
             const baseurl = "http://localhost:3000/open/";
-            const selected = ref("Välj här");
+            const selected = ref("Välj här:");
             const cats = ref([
                 "Välj här:",
                 "Alla rätter",
@@ -80,6 +80,27 @@
             };
         },
         methods: {
+            async getData() {
+                const url = "http://localhost:3000/api/allfood";
+                await fetch(url, {method: 'GET'})
+                        .then(response => {
+                            if (!response.ok)
+                            {
+                                throw new Error(response.message);
+                                return false;
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            this.posts = data;
+                            return true;
+                        })
+                        .catch(error => {
+                            var elem = document.getElementById("message");
+                            elem.innerHTML = error;
+                            return false;
+                        });
+            },
             async searchWord(e) {
                 if (e.keyCode === 13 || e.key === "Enter") {
                     this.word = this.$refs.search.value;
@@ -92,15 +113,34 @@
                 }
             },
             async filterCategory($event) {
-                if ($event.target.value === "")
+                if ($event.target.value === "Välj här:") {
                     return;
-                else {
+                } else if ($event.target.value === "Alla rätter") {
+                    this.getData();
+                    return true;
+                } else {
                     this.cat = $event.target.value;
-                    let response = await fetch(this.baseurl + "category/" + this.cat);
-                    this.posts = await response.json();
-                    if (this.posts.length === 0) {
-                        this.msg = "Inga passande sökresultat har hittats.";
-                    }
+                    await fetch(this.baseurl + "/search/" + this.cat, {method: 'GET'})
+                            .then(response => {
+                                if (!response.ok)
+                                {
+                                    throw new Error(response.message);
+                                    return false;
+                                }
+                                return response.json();
+                            })
+                            .then(data => {
+                                this.posts = data;
+                                if (this.posts.length === 0) {
+                                    this.msg = "Inga passande sökresultat har hittats.";
+                                }
+                                return true;
+                            })
+                            .catch(error => {
+                                var elem = document.getElementById("message");
+                                elem.innerHTML = error;
+                                return false;
+                            });
                 }
             },
             mouseClick: function (obj) {
